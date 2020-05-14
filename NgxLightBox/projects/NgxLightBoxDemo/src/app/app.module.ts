@@ -2,11 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgxLightBoxModule } from 'ngx-light-box';
+import { NgxLigthBoxModule } from 'ngx-light-box';
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [BrowserModule, NgxLightBoxModule],
+	imports: [BrowserModule, NgxLigthBoxModule.forRoot()],
 	providers: [],
 	bootstrap: [AppComponent],
 })
