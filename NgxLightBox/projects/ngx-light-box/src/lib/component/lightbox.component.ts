@@ -12,11 +12,13 @@ import {
 	Inject,
 	PLATFORM_ID,
 	OnChanges,
+	ViewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Image } from './../models/image.model';
 import { PhotoswipeImage } from '../models/photoswipe-image.model';
 import { NgxLightboxService } from './../service/lightbox.service';
+import { NgxLightBoxDirective } from './../directive/ngxLightBox.directive';
 
 @Component({
 	selector: 'ngx-lightbox',
@@ -26,7 +28,11 @@ import { NgxLightboxService } from './../service/lightbox.service';
 })
 export class NgxLightboxComponent implements OnChanges {
 	@Input('galleryKey') galleryKey: string;
-	@Output() imagesLoaded: EventEmitter<number> = new EventEmitter();
+	@ViewChild('NgxLightBox', { static: false })
+	directiveRef?: NgxLightBoxDirective;
+	@Output('imagesLoaded') imagesLoaded: EventEmitter<
+		number
+	> = new EventEmitter();
 	isBrowser: boolean;
 	key: any;
 	image: any;
@@ -37,6 +43,9 @@ export class NgxLightboxComponent implements OnChanges {
 	) {
 		ref.detach();
 		this.isBrowser = this.isBrowser = isPlatformBrowser(platformId);
+		this.lbService.ls.subscribe((res: Image) => {
+			this.openImage(res);
+		});
 	}
 
 	ngOnChanges(): void {
@@ -77,6 +86,9 @@ export class NgxLightboxComponent implements OnChanges {
 			this.getImagesAsPhotoswipe(),
 			options,
 		).init();
+		setInterval(() => {
+			console.log(this.directiveRef);
+		}, 1000);
 
 		return false;
 	}

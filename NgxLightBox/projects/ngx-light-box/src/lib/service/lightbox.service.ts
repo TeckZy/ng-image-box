@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Image } from './../models/image.model';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class NgxLightboxService {
+	ls = new Subject();
 	gallery: { [key: string]: Array<Image> } = {};
 
 	createGallery(key: string): void {
@@ -37,5 +39,9 @@ export class NgxLightboxService {
 				this.gallery[key].splice(index, 1);
 			}
 		});
+	}
+
+	openImage(img) {
+		this.ls.next(img);
 	}
 }
