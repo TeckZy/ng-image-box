@@ -9,4 +9,5 @@ export declare class NgxLightboxService {
 	addImage(key: string, image: Image): void;
 	getImages(key: string): Image[];
 	removeImage(key: string, id: number): void;
+	openImage(img: any): void;
 }
