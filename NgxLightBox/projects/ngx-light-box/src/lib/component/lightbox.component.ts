@@ -1,3 +1,4 @@
+import { LightBoxEvents } from './../models/photoswipe-interface';
 import * as PhotoSwipe from 'photoswipe';
 import * as PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
 import * as imagesloaded_ from 'imagesloaded';
@@ -37,9 +38,28 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 	@Input('galleryKey') galleryKey: string;
 	@ViewChild('Ngx', { static: false })
 	directiveRef?: NgxLightBoxDirective;
-	@Output('imagesLoaded') imagesLoaded: EventEmitter<
-		number
-	> = new EventEmitter();
+
+	// OutPut Event Emmiter
+
+	@Output() imagesLoaded: EventEmitter<number> = new EventEmitter();
+	@Output() beforeChange: EventEmitter<any> = new EventEmitter<any>();
+	@Output() afterChange: EventEmitter<any> = new EventEmitter<any>();
+	@Output() imageLoadComplete: EventEmitter<any> = new EventEmitter<any>();
+	@Output() resize: EventEmitter<any> = new EventEmitter<any>();
+	@Output() gettingData: EventEmitter<any> = new EventEmitter<any>();
+	@Output() mouseUsed: EventEmitter<any> = new EventEmitter<any>();
+	@Output() initialZoomIn: EventEmitter<any> = new EventEmitter<any>();
+	@Output() initialZoomInEnd: EventEmitter<any> = new EventEmitter<any>();
+	@Output() initialZoomOut: EventEmitter<any> = new EventEmitter<any>();
+	@Output() initialZoomOutEnd: EventEmitter<any> = new EventEmitter<any>();
+	@Output() parseVerticalMargin: EventEmitter<any> = new EventEmitter<any>();
+	@Output() close: EventEmitter<any> = new EventEmitter<any>();
+	@Output() unbindEvents: EventEmitter<any> = new EventEmitter<any>();
+	@Output() destroy: EventEmitter<any> = new EventEmitter<any>();
+	@Output() updateScrollOffset: EventEmitter<any> = new EventEmitter<any>();
+	@Output() preventDragEvent: EventEmitter<any> = new EventEmitter<any>();
+	@Output() shareLinkClick: EventEmitter<any> = new EventEmitter<any>();
+
 	isBrowser: boolean;
 	key: any;
 	image: any;
@@ -66,12 +86,10 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 			this.checkImageLoad();
 		}
 	}
-	openImage(index): boolean {
-		this.openPhotoSwipe(
-			index,
-			document.getElementsByClassName('ngx_photoswipe')[0],
-		);
 
+	openImage(index): boolean {
+		const galleryDOM = document.getElementsByClassName('ngx_photoswipe')[0];
+		this.openPhotoSwipe(index, galleryDOM);
 		return false;
 	}
 
@@ -87,7 +105,7 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 
 	private openPhotoSwipe(index: number, galleryDOM: any): boolean {
 		const options: PhotoSwipe.Options = {};
-		options.galleryUID = galleryDOM.getAttribute('data-pswp-uid');
+		options.galleryUID = galleryDOM.getAttribute('data-pswp-uid') || 1;
 		options.index = index ? index : 0;
 		const PSWP: HTMLElement = document.querySelectorAll(
 			'.pswp',
@@ -100,10 +118,13 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 			this.getConfigOptions(options),
 		);
 		this.gallery.init();
+		this.listenForEvent();
 		return false;
 	}
 
-	private getConfigOptions(defaultOptions: LightBoxConfig) {
+	private getConfigOptions(
+		defaultOptions: LightBoxConfig,
+	): PhotoSwipeUI_Default.Options {
 		const config: LightBoxConfig = { ...this.defaults };
 		Object.assign(config, defaultOptions);
 		return config;
@@ -120,14 +141,71 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 					new PhotoswipeImage(img.largeUrl, img.width, img.height),
 				);
 			});
-
 		return items;
 	}
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+		this._destroy();
 	}
+
 	private _destroy() {
 		this.gallery.destroy();
 	}
+
+	listenForEvent() {}
+
+	private _goto(arg: number): void {
+		this.gallery.goTo(arg);
+	}
+	private _next() {
+		this.gallery.next();
+	}
+	private _prev(arg: number) {
+		this.gallery.prev();
+	}
+
+	private _close() {
+		this.gallery.close();
+	}
+	// Update gallery size
+	// @param  {boolean} `force` If you set it to `true`,
+	//                          size of the gallery will be updated
+	//                          even if viewport size hasn't changed.
+	// pswp.updateSize(force);
+	private _updateSize(force: boolean) {
+		this.gallery.updateSize(force);
+	}
+
+	// Zoom current slide to (optionally with animation)
+	// @param  {number}   `destZoomLevel` Destination scale number. 1 - original.
+	//                                   pswp.currItem.fitRatio - image will fit into viewport.
+	// @param  {object}   `centerPoint`   Object of x and y coordinates, relative to viewport.
+	// @param  {int}      `speed`         Animation duration. Can be 0.
+	// @param  {function} `easingFn`      Easing function (optional). Set to false to use default easing.
+	// @param  {function} `updateFn`      Function will be called on each update frame. (optional)
+	//
+	// Example below will 2x zoom to center of slide:
+	// pswp.zoomTo(2, {x:pswp.viewportSize.x/2,y:pswp.viewportSize.y/2}, 2000, false, function(now) {
+	//
+	// });
+	private _zoomCurrentlide(
+		destZoomLevel: number,
+		centerPoint: { x: number; y: number },
+		speed: number,
+		easingFn?: (k: number) => number,
+		updateFn?: (now: number) => void,
+	): void {
+		this.gallery.zoomTo(
+			destZoomLevel,
+			centerPoint,
+			speed,
+			easingFn,
+			updateFn,
+		);
+	}
+
+	// set  items {
+	// 	return this.gallery.items;
+	// }
 }
