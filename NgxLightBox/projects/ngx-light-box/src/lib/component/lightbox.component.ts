@@ -1,4 +1,3 @@
-import { LightBoxEvents } from './../models/photoswipe-interface';
 import * as PhotoSwipe from 'photoswipe';
 import * as PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
 import * as imagesloaded_ from 'imagesloaded';
@@ -153,7 +152,66 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		this.gallery.destroy();
 	}
 
-	listenForEvent() {}
+	listenForEvent() {
+		this.gallery.listen('beforeChange', () => {
+			this.beforeChange.emit();
+		});
+		this.gallery.listen('afterChange', () => {
+			this.afterChange.emit();
+		});
+		this.gallery.listen('imageLoadComplete', () => {
+			this.imageLoadComplete.emit();
+		});
+		this.gallery.listen('resize', () => {
+			this.resize.emit();
+		});
+		this.gallery.listen('gettingData', () => {
+			this.gettingData.emit();
+		});
+		this.gallery.listen('mouseUsed', () => {
+			this.mouseUsed.emit();
+		});
+		this.gallery.listen('initialZoomIn', () => {
+			this.initialZoomIn.emit();
+		});
+		this.gallery.listen('initialZoomInEnd', () => {
+			this.initialZoomInEnd.emit();
+		});
+		this.gallery.listen('initialZoomOut', () => {
+			this.initialZoomOut.emit();
+		});
+		this.gallery.listen('initialZoomOutEnd', () => {
+			this.initialZoomOutEnd.emit();
+		});
+		this.gallery.listen('parseVerticalMargin', (item: PhotoSwipe.Item) => {
+			this.parseVerticalMargin.emit(item);
+		});
+		this.gallery.listen('close', () => {
+			this.close.emit();
+		});
+		this.gallery.listen('unbindEvents', () => {
+			this.unbindEvents.emit();
+		});
+		this.gallery.listen('destroy', () => {
+			this.destroy.emit();
+		});
+		this.gallery.listen('updateScrollOffset', () => {
+			this.updateScrollOffset.emit();
+		});
+		this.gallery.listen(
+			'preventDragEvent',
+			(
+				e: MouseEvent,
+				isDown: boolean,
+				preventObj: { prevent: boolean },
+			) => {
+				this.preventDragEvent.emit({ e, isDown, preventObj });
+			},
+		);
+		this.gallery.listen('shareLinkClick', (e, target) => {
+			this.shareLinkClick.emit({ e, target });
+		});
+	}
 
 	private _goto(arg: number): void {
 		this.gallery.goTo(arg);

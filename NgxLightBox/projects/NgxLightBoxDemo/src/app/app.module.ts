@@ -9,7 +9,7 @@ const DEFAULT_CONFIG: LightBoxConfig = {
 	escKey: false,
 	closeOnScroll: false,
 	//ui-config
-	arrowEl: false,
+	arrowEl: true,
 };
 
 @NgModule({
