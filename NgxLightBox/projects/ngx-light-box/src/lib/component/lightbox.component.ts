@@ -13,6 +13,7 @@ import {
 	PLATFORM_ID,
 	OnChanges,
 	ViewChild,
+	Optional,
 	OnDestroy,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
@@ -20,6 +21,11 @@ import { Image } from './../models/image.model';
 import { PhotoswipeImage } from '../models/photoswipe-image.model';
 import { NgxLightboxService } from './../service/lightbox.service';
 import { NgxLightBoxDirective } from './../directive/ngxLightBox.directive';
+import {
+	LIGHTBOX_CONFIG,
+	LightBoxConfig,
+} from '../models/photoswipe-interface';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'ngx-lightbox',
@@ -27,9 +33,9 @@ import { NgxLightBoxDirective } from './../directive/ngxLightBox.directive';
 	styleUrls: ['../style/lightbox.style.scss'],
 	encapsulation: ViewEncapsulation.None,
 })
-export class NgxLightboxComponent implements OnChanges, OnDestroy {
+export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 	@Input('galleryKey') galleryKey: string;
-	@ViewChild('NgxLightBox', { static: false })
+	@ViewChild('Ngx', { static: false })
 	directiveRef?: NgxLightBoxDirective;
 	@Output('imagesLoaded') imagesLoaded: EventEmitter<
 		number
@@ -37,17 +43,21 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy {
 	isBrowser: boolean;
 	key: any;
 	image: any;
-	subscription;
+	subscription: Subscription;
+	gallery: PhotoSwipe<PhotoSwipe.Options>;
+
 	constructor(
 		private lbService: NgxLightboxService,
 		private ref: ChangeDetectorRef,
 		@Inject(PLATFORM_ID) platformId: string,
+		@Optional() @Inject(LIGHTBOX_CONFIG) private defaults: LightBoxConfig,
 	) {
 		ref.detach();
 		this.isBrowser = this.isBrowser = isPlatformBrowser(platformId);
-		this.subscription = this.lbService.ls.subscribe(index => {
+		this.subscription = this.lbService.ls.subscribe((index) => {
 			this.openImage(index);
 		});
+		this.key = this.galleryKey;
 	}
 
 	ngOnChanges(): void {
@@ -82,17 +92,21 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy {
 		const PSWP: HTMLElement = document.querySelectorAll(
 			'.pswp',
 		)[0] as HTMLElement;
-		new PhotoSwipe(
+
+		this.gallery = new PhotoSwipe(
 			PSWP,
 			PhotoSwipeUI_Default,
 			this.getImagesAsPhotoswipe(),
-			options,
-		).init();
-		setInterval(() => {
-			console.log(this.directiveRef);
-		}, 1000);
-
+			this.getConfigOptions(options),
+		);
+		this.gallery.init();
 		return false;
+	}
+
+	private getConfigOptions(defaultOptions: LightBoxConfig) {
+		const config: LightBoxConfig = { ...this.defaults };
+		Object.assign(config, defaultOptions);
+		return config;
 	}
 
 	private getImagesAsPhotoswipe(): Array<PhotoswipeImage> {
@@ -112,5 +126,8 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+	}
+	private _destroy() {
+		this.gallery.destroy();
 	}
 }
