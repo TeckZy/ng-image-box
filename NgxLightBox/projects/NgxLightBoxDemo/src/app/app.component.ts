@@ -46,7 +46,7 @@ export class AppComponent {
 	open() {
 		this._ls.createGallery('galleryKey');
 		const self = this;
-		this.images.forEach((value) => {
+		this.images.forEach(value => {
 			const img = new Image();
 			img.largeUrl = value.src;
 			img.height = 1920;
@@ -55,7 +55,6 @@ export class AppComponent {
 			img.thumbUrl = value.src;
 			self._ls.addImage('galleryKey', img);
 		});
-		const img = new Image();
-		this._ls.openImage(img);
+		this._ls.openImage(0);
 	}
 }
