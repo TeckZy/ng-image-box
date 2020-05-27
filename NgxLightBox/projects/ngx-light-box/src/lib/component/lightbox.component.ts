@@ -13,6 +13,7 @@ import {
 	PLATFORM_ID,
 	OnChanges,
 	ViewChild,
+	OnDestroy,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Image } from './../models/image.model';
@@ -26,7 +27,7 @@ import { NgxLightBoxDirective } from './../directive/ngxLightBox.directive';
 	styleUrls: ['../style/lightbox.style.scss'],
 	encapsulation: ViewEncapsulation.None,
 })
-export class NgxLightboxComponent implements OnChanges {
+export class NgxLightboxComponent implements OnChanges, OnDestroy {
 	@Input('galleryKey') galleryKey: string;
 	@ViewChild('NgxLightBox', { static: false })
 	directiveRef?: NgxLightBoxDirective;
@@ -36,6 +37,7 @@ export class NgxLightboxComponent implements OnChanges {
 	isBrowser: boolean;
 	key: any;
 	image: any;
+	subscription;
 	constructor(
 		private lbService: NgxLightboxService,
 		private ref: ChangeDetectorRef,
@@ -43,8 +45,8 @@ export class NgxLightboxComponent implements OnChanges {
 	) {
 		ref.detach();
 		this.isBrowser = this.isBrowser = isPlatformBrowser(platformId);
-		this.lbService.ls.subscribe((res: Image) => {
-			this.openImage(res);
+		this.subscription = this.lbService.ls.subscribe(index => {
+			this.openImage(index);
 		});
 	}
 
@@ -54,9 +56,9 @@ export class NgxLightboxComponent implements OnChanges {
 			this.checkImageLoad();
 		}
 	}
-	openImage(img: Image): boolean {
+	openImage(index): boolean {
 		this.openPhotoSwipe(
-			img,
+			index,
 			document.getElementsByClassName('ngx_photoswipe')[0],
 		);
 
@@ -73,10 +75,10 @@ export class NgxLightboxComponent implements OnChanges {
 		});
 	}
 
-	private openPhotoSwipe(img: Image, galleryDOM: any): boolean {
+	private openPhotoSwipe(index: number, galleryDOM: any): boolean {
 		const options: PhotoSwipe.Options = {};
 		options.galleryUID = galleryDOM.getAttribute('data-pswp-uid');
-		options.index = img.id;
+		options.index = index ? index : 0;
 		const PSWP: HTMLElement = document.querySelectorAll(
 			'.pswp',
 		)[0] as HTMLElement;
@@ -106,5 +108,9 @@ export class NgxLightboxComponent implements OnChanges {
 			});
 
 		return items;
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 }

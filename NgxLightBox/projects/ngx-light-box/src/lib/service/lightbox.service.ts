@@ -41,7 +41,7 @@ export class NgxLightboxService {
 		});
 	}
 
-	openImage(img) {
-		this.ls.next(img);
+	openImage(index) {
+		this.ls.next(index);
 	}
 }
