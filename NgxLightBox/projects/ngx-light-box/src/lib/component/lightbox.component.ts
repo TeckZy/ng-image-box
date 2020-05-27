@@ -12,7 +12,6 @@ import {
 	Inject,
 	PLATFORM_ID,
 	OnChanges,
-	ViewChild,
 	Optional,
 	OnDestroy,
 } from '@angular/core';
@@ -20,14 +19,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { Image } from './../models/image.model';
 import { PhotoswipeImage } from '../models/photoswipe-image.model';
 import { NgxLightboxService } from './../service/lightbox.service';
-import { NgxLightBoxDirective } from './../directive/ngxLightBox.directive';
-import {
-	LIGHTBOX_CONFIG,
-	LightBoxConfig,
-} from '../models/photoswipe-interface';
+import { LIGHTBOX_CONFIG, LightBox } from '../models/photoswipe-interface';
 import { Subscription } from 'rxjs';
 
 @Component({
+	// tslint:disable-next-line: component-selector
 	selector: 'ngx-lightbox',
 	templateUrl: './lightbox.component.html',
 	styleUrls: ['../style/lightbox.style.scss'],
@@ -35,8 +31,6 @@ import { Subscription } from 'rxjs';
 })
 export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 	@Input('galleryKey') galleryKey: string;
-	@ViewChild('Ngx', { static: false })
-	directiveRef?: NgxLightBoxDirective;
 
 	// OutPut Event Emmiter
 
@@ -63,13 +57,15 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 	key: any;
 	image: any;
 	subscription: Subscription;
-	gallery: PhotoSwipe<PhotoSwipe.Options>;
+	gallery: PhotoSwipe<LightBox.LightBoxConfig>;
 
 	constructor(
 		private lbService: NgxLightboxService,
 		private ref: ChangeDetectorRef,
 		@Inject(PLATFORM_ID) platformId: string,
-		@Optional() @Inject(LIGHTBOX_CONFIG) private defaults: LightBoxConfig,
+		@Optional()
+		@Inject(LIGHTBOX_CONFIG)
+		private defaults: LightBox.LightBoxConfig,
 	) {
 		ref.detach();
 		this.isBrowser = this.isBrowser = isPlatformBrowser(platformId);
@@ -103,7 +99,7 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 	}
 
 	private openPhotoSwipe(index: number, galleryDOM: any): boolean {
-		const options: PhotoSwipe.Options = {};
+		const options: LightBox.LightBoxConfig = {};
 		options.galleryUID = galleryDOM.getAttribute('data-pswp-uid') || 1;
 		options.index = index ? index : 0;
 		const PSWP: HTMLElement = document.querySelectorAll(
@@ -122,9 +118,9 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 	}
 
 	private getConfigOptions(
-		defaultOptions: LightBoxConfig,
-	): PhotoSwipeUI_Default.Options {
-		const config: LightBoxConfig = { ...this.defaults };
+		defaultOptions: LightBox.LightBoxConfig,
+	): LightBox.LightBoxConfig {
+		const config: LightBox.LightBoxConfig = { ...this.defaults };
 		Object.assign(config, defaultOptions);
 		return config;
 	}
@@ -159,9 +155,12 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		this.gallery.listen('afterChange', () => {
 			this.afterChange.emit();
 		});
-		this.gallery.listen('imageLoadComplete', () => {
-			this.imageLoadComplete.emit();
-		});
+		this.gallery.listen(
+			'imageLoadComplete',
+			(index: number, item: LightBox.LightBoxItem) => {
+				this.imageLoadComplete.emit({ index, item });
+			},
+		);
 		this.gallery.listen('resize', () => {
 			this.resize.emit();
 		});
@@ -183,9 +182,12 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		this.gallery.listen('initialZoomOutEnd', () => {
 			this.initialZoomOutEnd.emit();
 		});
-		this.gallery.listen('parseVerticalMargin', (item: PhotoSwipe.Item) => {
-			this.parseVerticalMargin.emit(item);
-		});
+		this.gallery.listen(
+			'parseVerticalMargin',
+			(item: LightBox.LightBoxItem) => {
+				this.parseVerticalMargin.emit(item);
+			},
+		);
 		this.gallery.listen('close', () => {
 			this.close.emit();
 		});
@@ -195,8 +197,8 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		this.gallery.listen('destroy', () => {
 			this.destroy.emit();
 		});
-		this.gallery.listen('updateScrollOffset', () => {
-			this.updateScrollOffset.emit();
+		this.gallery.listen('updateScrollOffset', (_offset) => {
+			this.updateScrollOffset.emit(_offset);
 		});
 		this.gallery.listen(
 			'preventDragEvent',
@@ -227,6 +229,7 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		this.gallery.close();
 	}
 	// Update gallery size
+	// updates the content of slides
 	// @param  {boolean} `force` If you set it to `true`,
 	//                          size of the gallery will be updated
 	//                          even if viewport size hasn't changed.
@@ -263,7 +266,8 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		);
 	}
 
-	// set  items {
-	// 	return this.gallery.items;
-	// }
+	// sets a flag that slides should be updated
+	private _invalidateCurrentItem() {
+		this.gallery.invalidateCurrItems();
+	}
 }

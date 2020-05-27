@@ -1,7 +1,8 @@
 import { InjectionToken } from '@angular/core';
+import * as PhotoSwipe from 'photoswipe';
 import * as PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
 
-export const LIGHTBOX_CONFIG = new InjectionToken<LightBoxConfig>(
+export const LIGHTBOX_CONFIG = new InjectionToken<LightBox.LightBoxConfig>(
 	'LIGHTBOX_CONFIG',
 );
 
@@ -43,4 +44,7 @@ export const LightBoxEvents: LightBoxEvent[] = [
 	'shareLinkClick',
 ];
 
-export interface LightBoxConfig extends PhotoSwipeUI_Default.Options {}
+export declare namespace LightBox {
+	export interface LightBoxConfig extends PhotoSwipeUI_Default.Options {}
+	export interface LightBoxItem extends PhotoSwipe.Item {}
+}
