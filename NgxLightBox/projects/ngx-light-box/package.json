@@ -1,5 +1,5 @@
 {
-	"name": "ngx-light-box",
+	"name": "@teckzy/ngx-light-box",
 	"version": "0.0.1",
 	"readme": "README.md",
 	"author": "Manoj && Akash",
@@ -16,5 +16,8 @@
 		"photoswipe": "^4.1.3",
 		"@types/photoswipe": "^4.0.28",
 		"@types/imagesloaded": "^4.1.1"
+	},
+	"scripts": {
+		"postinstall": "node postinstall.js"
 	}
 }

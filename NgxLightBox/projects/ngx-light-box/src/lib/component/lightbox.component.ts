@@ -14,6 +14,8 @@ import {
 	OnChanges,
 	Optional,
 	OnDestroy,
+	ViewChild,
+	ElementRef,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Image } from './../models/image.model';

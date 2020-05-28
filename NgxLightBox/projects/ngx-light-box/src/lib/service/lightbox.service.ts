@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { NgxLightboxComponent } from './../component/lightbox.component';
+import { Injectable, ElementRef } from '@angular/core';
 import { Image } from './../models/image.model';
 import { Subject } from 'rxjs';
 
@@ -6,6 +7,7 @@ import { Subject } from 'rxjs';
 export class NgxLightboxService {
 	ls = new Subject();
 	gallery: { [key: string]: Array<Image> } = {};
+	galleryElemrnt: ElementRef<NgxLightboxComponent>;
 
 	createGallery(key: string): void {
 		this.gallery[key] = [];
