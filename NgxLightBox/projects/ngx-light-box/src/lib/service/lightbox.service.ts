@@ -47,9 +47,14 @@ export class NgxLightboxService {
 		});
 	}
 
-	openImage(index) {
+	openGallery(index) {
+		this.ls.next(index);
+	}
+
+	openAutoGallery(index: number, interval: number) {
 		this.ls.next(index);
 		this._getReference();
+		setInterval(this.getReference().next, 1000);
 	}
 
 	getReference(): PhotoSwipe<LightBox.LightBoxConfig> {
