@@ -1,27 +1,95 @@
-# NgxLightBox
+# Angular Light Box
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.2.
+<a href="https://badge.fury.io/js/ngx-swiper-wrapper"><img src="https://badge.fury.io/js/ngx-swiper-wrapper.svg" align="right" alt="npm version" height="18"></a>
 
-## Development server
+This is an Angular ligth box library for the [PhotoSwipe](https://photoswipe.com/).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This documentation is for the first version which requires Angular 5 or newer.
 
-## Code scaffolding
+### Quick links
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<!-- [Example application](https://zefoy.github.io/ngx-swiper-wrapper/)
+ |
+[StackBlitz example](https://stackblitz.com/github/zefoy/ngx-swiper-wrapper/tree/master)
+ |
+[Swiper documentation](http://idangero.us/swiper/api/) -->
 
-## Build
+### Building the library
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```bash
+npm install
+npm run build:lib
+```
 
-## Running unit tests
+### Running the example
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm install
+npm run start
+```
 
-## Running end-to-end tests
+### Installing and usage
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```bash
+npm install ngx-light-box --save
+```
 
-## Further help
+##### Load the module for your app:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Add NgxLightBox Module and Config
+
+```javascript
+import { NgxLigthBoxModule, LIGHTBOX_CONFIG, LightBox } from 'ngx-light-box';
+
+const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
+	loop: false,
+	escKey: false,
+	closeOnScroll: false,
+	arrowEl: true,
+};
+
+@NgModule({
+  ...
+  imports: [
+    ...
+    NgxLigthBoxModule.forRoot(),
+  ],
+  providers: [
+    {
+      provide: LIGHTBOX_CONFIG,
+      useValue: DEFAULT_CONFIG,
+    }
+  ]
+})
+```
+
+##### Load the module for your app:
+
+Add service and image model in your app component
+
+```javascript
+import { NgxLightboxService, Image } from 'ngx-light-box';
+
+constructor(private _lightboxService: NgxLightboxService) {}
+```
+
+##### Use it in your HTML template:
+
+```html
+<ngx-lightbox class="item" galleryKey="galleryKey"></ngx-lightbox>
+```
+
+##### Available control / helper functions (provided by service):
+
+```javascript
+createGallery(key: string)                                      // Create gallery with provided key name
+
+addImage(key: string, image: Image)                             // Added Image in gallery
+removeImage(key: string, id: number)                            // Added Image from gallery
+
+openGallery(index: number)                                      // Open gallery with provided index of gallery images
+openAutoGallery(index: number, interval: number))               // Open gallery with provided index of gallery images and set interval at which slide change
+
+```
+
+Above functions can be accessed through the lightbox service
