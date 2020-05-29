@@ -56,5 +56,6 @@ export class AppComponent {
 			self._ls.addImage('galleryKey', img);
 		});
 		this._ls.openImage(0);
+		setInterval(this._ls.getReference().next, 1000);
 	}
 }

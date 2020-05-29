@@ -2,17 +2,22 @@ import { NgxLightboxComponent } from './../component/lightbox.component';
 import { Injectable, ElementRef } from '@angular/core';
 import { Image } from './../models/image.model';
 import { Subject } from 'rxjs';
+import { LightBox } from '../models/photoswipe-interface';
 
 @Injectable()
 export class NgxLightboxService {
 	ls = new Subject();
 	gallery: { [key: string]: Array<Image> } = {};
-	galleryElemrnt: ElementRef<NgxLightboxComponent>;
+	galleryElement: PhotoSwipe<LightBox.LightBoxConfig>;
 
 	createGallery(key: string): void {
 		this.gallery[key] = [];
 
 		return;
+	}
+
+	private _getReference() {
+		this.ls.next('GET_REF');
 	}
 
 	setImages(key: string, images: Array<Image>): void {
@@ -34,7 +39,6 @@ export class NgxLightboxService {
 	getImages(key: string): Array<Image> {
 		return this.gallery[key];
 	}
-
 	removeImage(key: string, id: number): void {
 		this.gallery[key].forEach((img, index) => {
 			if (img.id === id) {
@@ -45,5 +49,12 @@ export class NgxLightboxService {
 
 	openImage(index) {
 		this.ls.next(index);
+		this._getReference();
+	}
+
+	getReference(): PhotoSwipe<LightBox.LightBoxConfig> {
+		if (!this.galleryElement)
+			throw Error('Call Open Image First to get The Reference ');
+		return this.galleryElement;
 	}
 }

@@ -72,7 +72,9 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		ref.detach();
 		this.isBrowser = this.isBrowser = isPlatformBrowser(platformId);
 		this.subscription = this.lbService.ls.subscribe((index) => {
-			this.openImage(index);
+			if (index === 'GET_REF') {
+				this.lbService.galleryElement = this.gallery;
+			} else this.openImage(index);
 		});
 		this.key = this.galleryKey;
 	}
@@ -215,61 +217,5 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 		this.gallery.listen('shareLinkClick', (e, target) => {
 			this.shareLinkClick.emit({ e, target });
 		});
-	}
-
-	private _goto(arg: number): void {
-		this.gallery.goTo(arg);
-	}
-	private _next() {
-		this.gallery.next();
-	}
-	private _prev(arg: number) {
-		this.gallery.prev();
-	}
-
-	private _close() {
-		this.gallery.close();
-	}
-	// Update gallery size
-	// updates the content of slides
-	// @param  {boolean} `force` If you set it to `true`,
-	//                          size of the gallery will be updated
-	//                          even if viewport size hasn't changed.
-	// pswp.updateSize(force);
-	private _updateSize(force: boolean) {
-		this.gallery.updateSize(force);
-	}
-
-	// Zoom current slide to (optionally with animation)
-	// @param  {number}   `destZoomLevel` Destination scale number. 1 - original.
-	//                                   pswp.currItem.fitRatio - image will fit into viewport.
-	// @param  {object}   `centerPoint`   Object of x and y coordinates, relative to viewport.
-	// @param  {int}      `speed`         Animation duration. Can be 0.
-	// @param  {function} `easingFn`      Easing function (optional). Set to false to use default easing.
-	// @param  {function} `updateFn`      Function will be called on each update frame. (optional)
-	//
-	// Example below will 2x zoom to center of slide:
-	// pswp.zoomTo(2, {x:pswp.viewportSize.x/2,y:pswp.viewportSize.y/2}, 2000, false, function(now) {
-	//
-	// });
-	private _zoomCurrentlide(
-		destZoomLevel: number,
-		centerPoint: { x: number; y: number },
-		speed: number,
-		easingFn?: (k: number) => number,
-		updateFn?: (now: number) => void,
-	): void {
-		this.gallery.zoomTo(
-			destZoomLevel,
-			centerPoint,
-			speed,
-			easingFn,
-			updateFn,
-		);
-	}
-
-	// sets a flag that slides should be updated
-	private _invalidateCurrentItem() {
-		this.gallery.invalidateCurrItems();
 	}
 }
