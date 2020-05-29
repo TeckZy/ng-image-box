@@ -38,15 +38,10 @@ export class AppComponent {
 			h: 900,
 		},
 	];
-	options = {
-		// optionName: 'option value'
-		// for example:
-		index: 0, // start at first slide
-	};
-	open() {
+	open(imageIndex: number = 0) {
 		this._ls.createGallery('galleryKey');
 		const self = this;
-		this.images.forEach((value) => {
+		this.images.forEach(value => {
 			const img = new Image();
 			img.largeUrl = value.src;
 			img.height = 1920;
@@ -55,7 +50,21 @@ export class AppComponent {
 			img.thumbUrl = value.src;
 			self._ls.addImage('galleryKey', img);
 		});
-		this._ls.openImage(0);
-		setInterval(this._ls.getReference().next, 1000);
+		this._ls.openGallery(imageIndex);
+	}
+
+	autoSlide(index) {
+		this._ls.createGallery('galleryKey');
+		const self = this;
+		this.images.forEach(value => {
+			const img = new Image();
+			img.largeUrl = value.src;
+			img.height = 1920;
+			img.width = 1280;
+			img.size = `${img.width}x${img.height}`;
+			img.thumbUrl = value.src;
+			self._ls.addImage('galleryKey', img);
+		});
+		this._ls.openAutoGallery(index, 1000); // time interval is 1000 ml
 	}
 }
