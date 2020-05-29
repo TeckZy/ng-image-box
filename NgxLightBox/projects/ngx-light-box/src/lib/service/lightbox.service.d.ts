@@ -9,4 +9,7 @@ export declare class NgxLightboxService {
 	addImage(key: string, image: Image): void;
 	getImages(key: string): Image[];
 	removeImage(key: string, id: number): void;
+	openGallery(index: any): void;
+	openAutoGallery(index: number, interval: number): void;
+	getReference(): PhotoSwipe<PhotoSwipe.Options>;
 }
