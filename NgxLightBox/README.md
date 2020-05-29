@@ -1,7 +1,5 @@
 # Angular Light Box
 
-<a href="https://badge.fury.io/js/ngx-swiper-wrapper"><img src="https://badge.fury.io/js/ngx-swiper-wrapper.svg" align="right" alt="npm version" height="18"></a>
-
 This is an Angular ligth box library for the [PhotoSwipe](https://photoswipe.com/).
 
 This documentation is for the first version which requires Angular 5 or newer.
