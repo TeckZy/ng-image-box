@@ -1,13 +1,13 @@
 export class Image {
-  id: number;
-  largeUrl: string;
-  thumbUrl: string;
-  size: string;
-  width: number;
-  height: number;
+	id: number;
+	largeUrl: string;
+	thumbUrl: string;
+	size: string;
+	width: number;
+	height: number;
 
-  description: string;
-  author: string;
+	description: string;
+	author: string;
 
-  constructor() {}
+	constructor() {}
 }

@@ -1,14 +1,14 @@
-import { NgxLightboxComponent } from './../component/lightbox.component';
-import { Injectable, ElementRef } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Image } from './../models/image.model';
 import { Subject } from 'rxjs';
 import { LightBox } from '../models/photoswipe-interface';
 
 @Injectable()
-export class NgxLightboxService {
+export class NgxLightboxService implements OnDestroy {
 	ls = new Subject();
 	gallery: { [key: string]: Array<Image> } = {};
 	galleryElement: PhotoSwipe<LightBox.LightBoxConfig>;
+	timedGalleryInstance: any;
 
 	createGallery(key: string): void {
 		this.gallery[key] = [];
@@ -54,12 +54,23 @@ export class NgxLightboxService {
 	openAutoGallery(index: number, interval: number) {
 		this.ls.next(index);
 		this._getReference();
-		setInterval(this.getReference().next, 1000);
+		this.timedGalleryInstance = setInterval(this.getReference().next, 1000);
 	}
 
 	getReference(): PhotoSwipe<LightBox.LightBoxConfig> {
 		if (!this.galleryElement)
 			throw Error('Call Open Image First to get The Reference ');
 		return this.galleryElement;
+	}
+
+	clearReference() {
+		clearInterval(this.timedGalleryInstance);
+	}
+
+	ngOnDestroy(): void {
+		if (this.galleryElement) {
+			this.clearReference();
+			this.galleryElement.destroy();
+		}
 	}
 }
