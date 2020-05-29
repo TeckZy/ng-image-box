@@ -1,16 +1,9 @@
 # Angular Light Box
 
-This is an Angular ligth box library for the [PhotoSwipe](https://photoswipe.com/).
+This is an Angular light box library for the [PhotoSwipe](https://photoswipe.com/).
 
 This documentation is for the first version which requires Angular 5 or newer.
 
-### Quick links
-
-<!-- [Example application](https://zefoy.github.io/ngx-swiper-wrapper/)
- |
-[StackBlitz example](https://stackblitz.com/github/zefoy/ngx-swiper-wrapper/tree/master)
- |
-[Swiper documentation](http://idangero.us/swiper/api/) -->
 
 ### Building the library
 
