@@ -4,7 +4,6 @@ This is an Angular light box library for the [PhotoSwipe](https://photoswipe.com
 
 This documentation is for the first version which requires Angular 5 or newer.
 
-
 ### Building the library
 
 ```bash
@@ -30,7 +29,7 @@ npm install ngx-light-box --save
 Add NgxLightBox Module and Config
 
 ```javascript
-import { NgxLigthBoxModule, LIGHTBOX_CONFIG, LightBox } from 'ngx-light-box';
+import { NgxLightBoxModule, LIGHTBOX_CONFIG, LightBox } from 'ngx-light-box';
 
 const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
 	loop: false,
@@ -43,7 +42,7 @@ const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
   ...
   imports: [
     ...
-    NgxLigthBoxModule.forRoot(),
+    NgxLightBoxModule.forRoot(),
   ],
   providers: [
     {

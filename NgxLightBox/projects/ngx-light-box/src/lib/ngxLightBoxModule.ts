@@ -19,10 +19,10 @@ export let providers = [NgxLightboxService];
 	providers: [NgxLightboxService],
 	exports: [NgxLightboxComponent],
 })
-export class NgxLigthBoxModule {
+export class NgxLightBoxModule {
 	static forRoot(): ModuleWithProviders {
 		return {
-			ngModule: NgxLigthBoxModule,
+			ngModule: NgxLightBoxModule,
 			providers,
 		};
 	}

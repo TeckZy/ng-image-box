@@ -16,8 +16,5 @@
 		"photoswipe": "^4.1.3",
 		"@types/photoswipe": "^4.0.28",
 		"@types/imagesloaded": "^4.1.1"
-	},
-	"scripts": {
-		"postinstall": "node postinstall.js"
 	}
 }

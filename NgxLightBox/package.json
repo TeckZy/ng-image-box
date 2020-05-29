@@ -1,6 +1,6 @@
 {
 	"name": "ngx-light-box",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"scripts": {
 		"ng": "ng",
 		"start": "npm run build:lib && ng serve --port 4400",
@@ -11,8 +11,8 @@
 		"build": "ng build",
 		"e2e": "ng e2e",
 		"build:lib": "ng build NgxLightBox",
-		"build:demo": "ng build NgxLightBoxDemo  --outputPath docs/ --aot",
-		"copy:files": "cp ./README.md ./distngx-light-box && cp ./LICENSE ./dist/ngx-light-box",
+		"build:demo": "ng build NgxLightBoxDemo --baseHref=ng-LightBox  --outputPath docs/ --aot",
+		"copy:files": "cp ./README.md ./dist/ngx-light-box && cp ./LICENSE ./dist/ngx-light-box",
 		"npm:pack": "cd dist/ngx-light-box && npm pack",
 		"npm:publish": "cd dist/ngx-light-box && npm publish --access public",
 		"package": "npm run build:lib && npm run copy:files && npm run npm:pack && npm run npm:publish"

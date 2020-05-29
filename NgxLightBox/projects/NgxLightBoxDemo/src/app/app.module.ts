@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgxLigthBoxModule, LIGHTBOX_CONFIG, LightBox } from 'ngx-light-box';
+import { NgxLightBoxModule, LIGHTBOX_CONFIG, LightBox } from 'ngx-light-box';
 const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
 	loop: false,
 	escKey: false,
@@ -13,7 +13,7 @@ const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [BrowserModule, NgxLigthBoxModule.forRoot()],
+	imports: [BrowserModule, NgxLightBoxModule.forRoot()],
 	providers: [
 		{
 			provide: LIGHTBOX_CONFIG,
