@@ -41,7 +41,7 @@ export class AppComponent {
 	open(imageIndex: number = 0) {
 		this._ls.createGallery('galleryKey');
 		const self = this;
-		this.images.forEach(value => {
+		this.images.forEach((value) => {
 			const img = new Image();
 			img.largeUrl = value.src;
 			img.height = 1920;
@@ -56,7 +56,7 @@ export class AppComponent {
 	autoSlide(index) {
 		this._ls.createGallery('galleryKey');
 		const self = this;
-		this.images.forEach(value => {
+		this.images.forEach((value) => {
 			const img = new Image();
 			img.largeUrl = value.src;
 			img.height = 1920;

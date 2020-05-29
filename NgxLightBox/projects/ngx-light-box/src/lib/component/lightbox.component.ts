@@ -14,8 +14,6 @@ import {
 	OnChanges,
 	Optional,
 	OnDestroy,
-	ViewChild,
-	ElementRef,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Image } from './../models/image.model';
@@ -193,12 +191,15 @@ export class NgxLightboxComponent implements OnChanges, OnDestroy, OnChanges {
 			},
 		);
 		this.gallery.listen('close', () => {
+			this.lbService.clearReference();
 			this.close.emit();
 		});
 		this.gallery.listen('unbindEvents', () => {
 			this.unbindEvents.emit();
 		});
 		this.gallery.listen('destroy', () => {
+			this.lbService.clearReference();
+
 			this.destroy.emit();
 		});
 		this.gallery.listen('updateScrollOffset', (_offset) => {

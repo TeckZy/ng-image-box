@@ -7,7 +7,7 @@ const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
 	loop: false,
 	escKey: false,
 	closeOnScroll: false,
-	//ui-config
+	// ui-config
 	arrowEl: true,
 };
 
