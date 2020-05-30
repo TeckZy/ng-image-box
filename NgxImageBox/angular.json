@@ -1,0 +1,157 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ngx-image-box": {
+      "projectType": "library",
+      "root": "projects/ngx-image-box",
+      "sourceRoot": "projects/ngx-image-box/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-image-box/tsconfig.lib.json",
+            "project": "projects/ngx-image-box/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-image-box/src/test.ts",
+            "tsConfig": "projects/ngx-image-box/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-image-box/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-image-box/tsconfig.lib.json",
+              "projects/ngx-image-box/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "NgxImageBoxDemo": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "root": "projects/NgxImageBoxDemo",
+      "sourceRoot": "projects/NgxImageBoxDemo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/NgxImageBoxDemo",
+            "index": "projects/NgxImageBoxDemo/src/index.html",
+            "main": "projects/NgxImageBoxDemo/src/main.ts",
+            "polyfills": "projects/NgxImageBoxDemo/src/polyfills.ts",
+            "tsConfig": "projects/NgxImageBoxDemo/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/NgxImageBoxDemo/src/favicon.ico",
+              "projects/NgxImageBoxDemo/src/assets"
+            ],
+            "styles": ["projects/NgxImageBoxDemo/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/NgxImageBoxDemo/src/environments/environment.ts",
+                  "with": "projects/NgxImageBoxDemo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "NgxImageBoxDemo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "NgxImageBoxDemo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "NgxImageBoxDemo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/NgxImageBoxDemo/src/test.ts",
+            "polyfills": "projects/NgxImageBoxDemo/src/polyfills.ts",
+            "tsConfig": "projects/NgxImageBoxDemo/tsconfig.spec.json",
+            "karmaConfig": "projects/NgxImageBoxDemo/karma.conf.js",
+            "assets": [
+              "projects/NgxImageBoxDemo/src/favicon.ico",
+              "projects/NgxImageBoxDemo/src/assets"
+            ],
+            "styles": ["projects/NgxImageBoxDemo/src/styles.css"],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/NgxImageBoxDemo/tsconfig.app.json",
+              "projects/NgxImageBoxDemo/tsconfig.spec.json",
+              "projects/NgxImageBoxDemo/e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/NgxImageBoxDemo/e2e/protractor.conf.js",
+            "devServerTarget": "NgxImageBoxDemo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "NgxImageBoxDemo:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngx-image-box ",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
+}
