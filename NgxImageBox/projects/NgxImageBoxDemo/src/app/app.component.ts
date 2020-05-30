@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgxImageboxService, Image } from 'dist/ngx-image-box';
+import { Component } from '@angular/core';
+import { NgxImageboxService, Image } from 'ngx-image-box';
 
 @Component({
 	selector: 'app-root',
@@ -7,8 +7,7 @@ import { NgxImageboxService, Image } from 'dist/ngx-image-box';
 	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-	title = 'NgxLightBoxDemo';
-	@ViewChild('photoSwipe', { static: false }) photoSwipe;
+	title = 'NgxImageBoxDemo';
 
 	constructor(private _ls: NgxImageboxService) {}
 	images = [

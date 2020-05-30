@@ -2,11 +2,11 @@ import { InjectionToken } from '@angular/core';
 import * as PhotoSwipe from 'photoswipe';
 import * as PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
 
-export const LIGHTBOX_CONFIG = new InjectionToken<LightBox.LightBoxConfig>(
-	'LIGHTBOX_CONFIG',
-);
+export const IMAGEBOX_CONFIG = new InjectionToken<
+	NgxImageBox.NgxImageBoxConfig
+>('IMAGEBOX_CONFIG');
 
-export type LightBoxEvent =
+export type NgxImageBoxEvent =
 	| 'beforeChange'
 	| 'afterChange'
 	| 'imageLoadComplete'
@@ -24,7 +24,7 @@ export type LightBoxEvent =
 	| 'updateScrollOffset'
 	| 'preventDragEvent'
 	| 'shareLinkClick';
-export const LightBoxEvents: LightBoxEvent[] = [
+export const NgxImageBoxEvents: NgxImageBoxEvent[] = [
 	'beforeChange',
 	'afterChange',
 	'imageLoadComplete',
@@ -44,7 +44,7 @@ export const LightBoxEvents: LightBoxEvent[] = [
 	'shareLinkClick',
 ];
 
-export declare namespace LightBox {
-	export interface LightBoxConfig extends PhotoSwipeUI_Default.Options {}
-	export interface LightBoxItem extends PhotoSwipe.Item {}
+export declare namespace NgxImageBox {
+	export interface NgxImageBoxConfig extends PhotoSwipeUI_Default.Options {}
+	export interface NgxImageBoxItem extends PhotoSwipe.Item {}
 }

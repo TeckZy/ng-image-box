@@ -1,5 +1,5 @@
 /*
- * Public API Surface of ngx-light-box
+ * Public API Surface of ngx-image-box
  */
 
 export * from './lib/service/ngx-image-box.service';

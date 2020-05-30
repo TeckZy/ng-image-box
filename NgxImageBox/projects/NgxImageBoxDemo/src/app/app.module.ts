@@ -2,12 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {
-	NgxImageBoxModule,
-	LIGHTBOX_CONFIG,
-	LightBox,
-} from 'dist/ngx-image-box';
-const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
+import { NgxImageBoxModule, NgxImageBox, IMAGEBOX_CONFIG } from 'ngx-image-box';
+
+const DEFAULT_CONFIG: NgxImageBox.NgxImageBoxConfig = {
 	loop: false,
 	escKey: false,
 	closeOnScroll: false,
@@ -20,7 +17,7 @@ const DEFAULT_CONFIG: LightBox.LightBoxConfig = {
 	imports: [BrowserModule, NgxImageBoxModule.forRoot()],
 	providers: [
 		{
-			provide: LIGHTBOX_CONFIG,
+			provide: IMAGEBOX_CONFIG,
 			useValue: DEFAULT_CONFIG,
 		},
 	],

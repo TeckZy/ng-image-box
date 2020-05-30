@@ -1,3 +1,4 @@
+import { IMAGEBOX_CONFIG } from './../models/photoswipe-interface';
 import * as PhotoSwipe from 'photoswipe';
 import * as PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
 import * as imagesloaded_ from 'imagesloaded';
@@ -18,9 +19,9 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { Image } from '../models/image.model';
 import { PhotoswipeImage } from '../models/photoswipe-image.model';
-import { LIGHTBOX_CONFIG, LightBox } from '../models/photoswipe-interface';
 import { Subscription } from 'rxjs';
 import { NgxImageboxService } from '../service/ngx-image-box.service';
+import { NgxImageBox } from '../models/photoswipe-interface';
 
 @Component({
 	// tslint:disable-next-line: component-selector
@@ -57,15 +58,15 @@ export class NgxImageboxComponent implements OnChanges, OnDestroy, OnChanges {
 	key: any;
 	image: any;
 	subscription: Subscription;
-	gallery: PhotoSwipe<LightBox.LightBoxConfig>;
+	gallery: PhotoSwipe<NgxImageBox.NgxImageBoxConfig>;
 
 	constructor(
 		private lbService: NgxImageboxService,
 		private ref: ChangeDetectorRef,
 		@Inject(PLATFORM_ID) platformId: string,
 		@Optional()
-		@Inject(LIGHTBOX_CONFIG)
-		private defaults: LightBox.LightBoxConfig,
+		@Inject(IMAGEBOX_CONFIG)
+		private defaults: NgxImageBox.NgxImageBoxConfig,
 	) {
 		ref.detach();
 		this.isBrowser = this.isBrowser = isPlatformBrowser(platformId);
@@ -101,7 +102,7 @@ export class NgxImageboxComponent implements OnChanges, OnDestroy, OnChanges {
 	}
 
 	private openPhotoSwipe(index: number, galleryDOM: any): boolean {
-		const options: LightBox.LightBoxConfig = {};
+		const options: NgxImageBox.NgxImageBoxConfig = {};
 		options.galleryUID = galleryDOM.getAttribute('data-pswp-uid') || 1;
 		options.index = index ? index : 0;
 		const PSWP: HTMLElement = document.querySelectorAll(
@@ -120,9 +121,9 @@ export class NgxImageboxComponent implements OnChanges, OnDestroy, OnChanges {
 	}
 
 	private getConfigOptions(
-		defaultOptions: LightBox.LightBoxConfig,
-	): LightBox.LightBoxConfig {
-		const config: LightBox.LightBoxConfig = { ...this.defaults };
+		defaultOptions: NgxImageBox.NgxImageBoxConfig,
+	): NgxImageBox.NgxImageBoxConfig {
+		const config: NgxImageBox.NgxImageBoxConfig = { ...this.defaults };
 		Object.assign(config, defaultOptions);
 		return config;
 	}
@@ -159,7 +160,7 @@ export class NgxImageboxComponent implements OnChanges, OnDestroy, OnChanges {
 		});
 		this.gallery.listen(
 			'imageLoadComplete',
-			(index: number, item: LightBox.LightBoxItem) => {
+			(index: number, item: NgxImageBox.NgxImageBoxItem) => {
 				this.imageLoadComplete.emit({ index, item });
 			},
 		);
@@ -186,7 +187,7 @@ export class NgxImageboxComponent implements OnChanges, OnDestroy, OnChanges {
 		});
 		this.gallery.listen(
 			'parseVerticalMargin',
-			(item: LightBox.LightBoxItem) => {
+			(item: NgxImageBox.NgxImageBoxItem) => {
 				this.parseVerticalMargin.emit(item);
 			},
 		);
